@@ -7,13 +7,12 @@ import container from "../constant/style";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import Images from "../components/Images";
 
-
 import colors from "../constant/colors";
-import { height, width } from "../constant/scale";
+import { height } from "../constant/scale";
 import Button from "../components/Button";
 import Terms from "../components/Terms";
 
-export default SignupScreen = ({navigation}) => {
+export default SignupScreen = ({ navigation }) => {
   const [isActive, setIsActive] = useState(null);
   return (
     <SafeAreaView style={[container, { paddingBottom: 30 }]}>
@@ -40,12 +39,12 @@ export default SignupScreen = ({navigation}) => {
           >
             <TouchableOpacity
               onPress={() => {
-                setIsActive(0)
+                setIsActive(0);
               }}
             >
               <View
                 style={{
-                  backgroundColor: isActive == 0 ? 'green' :colors.lightGrey,
+                  backgroundColor: isActive == 0 ? "green" : colors.lightGrey,
                   padding: 36,
                   margin: 10,
                   borderRadius: 20,
@@ -76,12 +75,12 @@ export default SignupScreen = ({navigation}) => {
           >
             <TouchableOpacity
               onPress={() => {
-                setIsActive(1)
+                setIsActive(1);
               }}
             >
               <View
                 style={{
-                  backgroundColor: isActive == 1 ? 'green' :colors.lightGrey,
+                  backgroundColor: isActive == 1 ? "green" : colors.lightGrey,
                   padding: 36,
                   margin: 10,
                   borderRadius: 20,
@@ -96,10 +95,17 @@ export default SignupScreen = ({navigation}) => {
         </View>
       </View>
       <View style={{ position: "absolute", bottom: 10, left: 10, right: 10 }}>
-        <Button text="Continue" bg={colors.generalWine} color="white" onclick={()=> {
-          if (isActive != null)
-          navigation.navigate('Signup2',{type:isActive == 0 ? 'Organization' : 'Person'})
-        }} />
+        <Button
+          text="Continue"
+          bg={colors.generalWine}
+          color="white"
+          onclick={() => {
+            if (isActive != null)
+              navigation.navigate("Signup2", {
+                type: isActive == 0 ? "Organization" : "Person",
+              });
+          }}
+        />
       </View>
     </SafeAreaView>
   );

@@ -7,27 +7,61 @@ import {
   TouchableWithoutFeedback,
   View,
 } from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
-import Input from "../components/Input";
 import colors from "../constant/colors";
 import Icon from "react-native-vector-icons/FontAwesome5";
 
 export default ConfirmScreen = ({ navigation, route }) => {
-  const [type, setType] = useState("");
-  const [error, setError] = useState("");
-  let placeholder = "";
+  const [error, setErrors] = useState({ name: "" });
+  const [inputs, setInputs] = useState({
+    email: "",
+    password: "",
+    password2: "",
+    name: "",
+    type: "",
+  });
   useEffect(() => {
-    setType(route.params.type);
+    console.log(route.params.data);
+    setInputs(route.params.data);
+    // console.log(inputs);
   }, []);
+
+  const validate = () => {
+    Keyboard.dismiss();
+    let isValid = true;
+    if (!inputs.name) {
+      isValid = false;
+      handleError("Field required", "name");
+    } else if (inputs?.name.length < 4) {
+      isValid = false;
+      handleError("Field must be longer than 4", "name");
+    }
+
+    if (isValid) {
+      register();
+    }
+  };
+
+  const register = () => console.log(inputs);
+
+  const handleError = (error, input) => {
+    setErrors((prevState) => ({ ...prevState, [input]: error }));
+  };
+
+  const handleChange = (text, input) => {
+    setInputs((prevState) => ({ ...prevState, [input]: text }));
+  };
   return (
     <>
       <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
         <ScrollView
-          contentContainerStyle={[container, { paddingBottom: 30, paddingTop: 90 }]}
+          contentContainerStyle={[
+            container,
+            { paddingBottom: 30, paddingTop: 90 },
+          ]}
         >
           <Text style={{ color: colors.grey }}>Hello</Text>
           <Text style={{ fontWeight: "bold", fontSize: 25, marginBottom: 20 }}>
-            {type === "Organization"
+            {inputs.type === "Organization"
               ? "Confirm Organization name"
               : "Pick a username"}
           </Text>
@@ -54,12 +88,21 @@ export default ConfirmScreen = ({ navigation, route }) => {
             >
               <TextInput
                 placeholder={
-                  type === "Organization" ? "Organization name" : "Username"
+                  inputs.type === "Organization"
+                    ? "Organization name"
+                    : "Username"
                 }
                 style={{ color: "black", fontSize: 17 }}
+                value={inputs.name}
+                onFocus={() => {
+                  handleError(null, "name");
+                }}
+                onChangeText={(text) => {
+                  handleChange(text, "name");
+                }}
               ></TextInput>
             </View>
-            {error && (
+            {error.name && (
               <View
                 style={{
                   display: "flex",
@@ -74,7 +117,7 @@ export default ConfirmScreen = ({ navigation, route }) => {
                     marginRight: 5,
                   }}
                 />
-                <Text style={{ color: "red" }}>{error}</Text>
+                <Text style={{ color: "red" }}>{error.name}</Text>
               </View>
             )}
           </View>
@@ -86,10 +129,7 @@ export default ConfirmScreen = ({ navigation, route }) => {
               bg={colors.generalWine}
               color="white"
               onclick={() => {
-                if (isActive != null)
-                  navigation.navigate("confirm", {
-                    type: isActive == 0 ? "Organization" : "Person",
-                  });
+                validate();
               }}
             />
           </View>
