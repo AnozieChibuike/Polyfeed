@@ -13,7 +13,7 @@ export default Test =()=> {
             <Input placeholder='Password' password={true} />
             <Input placeholder='Retype password' password={true} />
             <Input placeholder='Retype password' password={true} />
-            {/* <Button text='HI' /> */}
+
         </ScrollView>
     </KeyboardAvoidingView>
 }
